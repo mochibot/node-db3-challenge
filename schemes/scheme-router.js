@@ -62,7 +62,7 @@ router.post('/:id/steps', async (req, res) => {
 
   try {
     const scheme = await Schemes.findById(id);
-
+    
     if (scheme) {
       const step = await Schemes.addStep(stepData, id);
       res.status(201).json(step);
@@ -96,10 +96,11 @@ router.delete('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
+    const toDelete = await Schemes.findById(id);
     const deleted = await Schemes.remove(id);
 
-    if (deleted) {
-      res.json({ removed: deleted });
+    if (toDelete && deleted) {
+      res.json({ removed: toDelete });
     } else {
       res.status(404).json({ message: 'Could not find scheme with given id' });
     }
